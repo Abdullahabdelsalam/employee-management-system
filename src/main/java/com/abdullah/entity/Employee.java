@@ -1,6 +1,5 @@
 package com.abdullah.entity;
 
-import com.abdullah.dto.EmployeeProfile;
 import jakarta.persistence.*;
 import lombok.*;
 

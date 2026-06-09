@@ -1,6 +1,5 @@
-package com.abdullah.dto;
+package com.abdullah.entity;
 
-import com.abdullah.entity.Employee;
 import jakarta.persistence.*;
 import lombok.*;
 
