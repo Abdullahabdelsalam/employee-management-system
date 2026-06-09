@@ -1,0 +1,38 @@
+package com.abdullah.dto;
+
+import com.abdullah.entity.Employee;
+import jakarta.persistence.*;
+import lombok.*;
+
+import java.time.LocalDate;
+
+@Entity
+@Table(name = "employee_profiles")
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
+public class EmployeeProfile {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+     private Long id;
+
+     private String address;
+
+     private String gender;
+
+     private LocalDate dateOfBirth;
+
+    private String emergencyContactName;
+
+    private String emergencyContactPhone;
+
+    @OneToOne
+    @JoinColumn(name = "employee_id",
+                nullable = false,
+                unique = true
+    )
+    private Employee employee;
+}

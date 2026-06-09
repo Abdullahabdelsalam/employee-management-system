@@ -1,5 +1,6 @@
 package com.abdullah.entity;
 
+import com.abdullah.dto.EmployeeProfile;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -42,4 +43,17 @@ public class Employee {
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(name = "department_id")
     private Department department;
+
+    @OneToOne(
+            mappedBy = "employee",
+            cascade = CascadeType.ALL,
+            fetch = FetchType.LAZY
+    )
+    private EmployeeProfile employeeProfile;
+
+    public void setProfile(EmployeeProfile employeeProfile) {
+        this.employeeProfile = employeeProfile;
+        employeeProfile.setEmployee(this);
+
+    }
 }
