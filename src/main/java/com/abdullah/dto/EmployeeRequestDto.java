@@ -1,5 +1,7 @@
 package com.abdullah.dto;
 
+import com.abdullah.entity.EmployeeStatus;
+import com.abdullah.entity.Gender;
 import jakarta.validation.constraints.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -57,5 +59,8 @@ public class EmployeeRequestDto {
     private LocalDate hireDate;
 
     @NotNull
-    private Boolean active;
+    private EmployeeStatus status;
+
+    @NotNull
+    private Gender gender;
 }
