@@ -5,7 +5,9 @@ import lombok.*;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 @Table(name = "employees")
@@ -40,8 +42,8 @@ public class Employee {
 
     private Boolean active;
 
-    @ManyToMany(fetch = FetchType.LAZY)
-    @JoinTable(name = "department_id")
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "department_id")
     private Department department;
 
     @OneToOne(
@@ -60,6 +62,23 @@ public class Employee {
     @OrderBy("changeDate DESC")
     private List<SalaryHistory> salaryHistory;
 
+    @ManyToMany(
+            cascade = {
+                    CascadeType.PERSIST,
+                    CascadeType.MERGE
+            }
+    )
+    @JoinTable(
+            name = "employee_project",
+            joinColumns =  @JoinColumn(
+                    name = "employee_id"
+            ),
+            inverseJoinColumns = @JoinColumn(
+                    name = "project_id"
+            )
+    )
+    private Set<Project> projects = new HashSet<>();
+
     public void setProfile(EmployeeProfile employeeProfile) {
         this.employeeProfile = employeeProfile;
         employeeProfile.setEmployee(this);
@@ -75,11 +94,9 @@ public class Employee {
         salaryHistory.setEmployee(null);
      }
 
-//    setSalaryHistory(List<SalaryHistory> salaryHistory) {
-//        this.salaryHistory = salaryHistory;
-//        for (SalaryHistory salaryHistoryItem : salaryHistory) {
-//            salaryHistoryItem.setEmployee(this);
-//        }
-//    }
+     public  void addProject(Project project) {
+        projects.add(project);
+         project.getEmployees().add(this);
+     }
 
 }
