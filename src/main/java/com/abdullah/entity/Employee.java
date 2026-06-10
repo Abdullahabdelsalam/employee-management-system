@@ -36,7 +36,8 @@ public class Employee {
 
     private String jobTitle;
 
-    private String nationality;
+    @Column(name = "national_id")
+    private String nationalId;
 
     private LocalDate hireDate;
 

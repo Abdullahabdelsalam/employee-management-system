@@ -20,8 +20,7 @@ public class EmployeeProfile {
 
      private String address;
 
-     private String gender;
-
+     @Column( name = "birth_date")
      private LocalDate dateOfBirth;
 
     private String emergencyContactName;

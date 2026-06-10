@@ -27,6 +27,11 @@ public class Department {
     )
     private String name;
 
+    @Column(
+            length = 500
+    )
+    private String description;
+
     @OneToMany(mappedBy = "department")
     private List<Employee> employees;
 
