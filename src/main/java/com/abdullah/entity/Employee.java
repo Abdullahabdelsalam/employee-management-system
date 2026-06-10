@@ -79,6 +79,23 @@ public class Employee {
     )
     private Set<Project> projects = new HashSet<>();
 
+    @ManyToMany(
+            cascade = {
+                    CascadeType.PERSIST,
+                    CascadeType.MERGE
+            }
+    )
+    @JoinTable(
+            name = "employee_skill",
+            joinColumns = @JoinColumn(
+                    name = "employee_id"
+            ),
+            inverseJoinColumns = @JoinColumn(
+                    name = "skill_id"
+            )
+    )
+    private Set<Skill> skills = new HashSet<>();
+
     public void setProfile(EmployeeProfile employeeProfile) {
         this.employeeProfile = employeeProfile;
         employeeProfile.setEmployee(this);
@@ -97,6 +114,21 @@ public class Employee {
      public  void addProject(Project project) {
         projects.add(project);
          project.getEmployees().add(this);
+     }
+
+     public void removeProject(Project project) {
+        projects.remove(project);
+        project.getEmployees().remove(this);
+     }
+
+     public void  addSkill(Skill skill) {
+        skills.add(skill);
+        skill.getEmployees().add(this);
+     }
+
+     public void removeSkill(Skill skill) {
+        skills.remove(skill);
+        skill.getEmployees().remove(this);
      }
 
 }
