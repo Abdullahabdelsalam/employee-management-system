@@ -1,4 +1,3 @@
-```markdown
 # 🚀 Employee Management System (RESTful API)
 
 A production-ready **Spring Boot RESTful API** for managing employees, featuring advanced database relationships, dynamic filtering, pagination, auditing, and clean architectural patterns.
@@ -14,6 +13,13 @@ A production-ready **Spring Boot RESTful API** for managing employees, featuring
 * **Validation:** Jakarta Bean Validation
 
 ---
+
+## 📐 Architecture
+
+The project follows a strict **Layered Architecture** with separated concerns to ensure scalability and maintainability:
+
+```text
+Controller Layer ──> Service Layer ──> Repository Layer ──> Database
 
 ## 📐 Architecture
 
