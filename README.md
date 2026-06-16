@@ -21,14 +21,6 @@ The project follows a strict Layered Architecture with separated concerns to ens
 
 Controller Layer ──> Service Layer ──> Repository Layer ──> Database
 
-## 📐 Architecture
-
-The project follows a strict **Layered Architecture** with separated concerns to ensure scalability and maintainability:
-
-Controller Layer ──> Service Layer ──> Repository Layer ──> Database
-
-
-
 ### Additional Layers & Component Breakdown
 
 * **DTO Layer:** Decouples the API presentation layer from the database entities.
