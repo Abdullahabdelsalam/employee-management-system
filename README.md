@@ -18,7 +18,7 @@ A production-ready **Spring Boot RESTful API** for managing employees, featuring
 
 The project follows a strict Layered Architecture with separated concerns to ensure scalability and maintainability:
 
-```text
+
 Controller Layer ──> Service Layer ──> Repository Layer ──> Database
 
 ## 📐 Architecture
@@ -27,7 +27,7 @@ The project follows a strict **Layered Architecture** with separated concerns to
 
 Controller Layer ──> Service Layer ──> Repository Layer ──> Database
 
-```
+
 
 ### Additional Layers & Component Breakdown
 
