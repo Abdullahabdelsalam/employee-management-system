@@ -3,99 +3,90 @@ package com.abdullah.controller;
 import com.abdullah.entity.Employee;
 import com.abdullah.entity.EmployeeStatus;
 import com.abdullah.entity.Gender;
-import com.abdullah.service.EmployeeService;
+import com.abdullah.service.EmployeeQueryService;
+import com.abdullah.service.EmployeeQueryServiceImpl;
+import com.abdullah.service.EmployeeServiceImpl;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.*;
+import com.abdullah.dto.EmployeeSummaryDto;
 
 import java.math.BigDecimal;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/employees")
+@RequestMapping("/api/query")
 @RequiredArgsConstructor
 public class EmployeeQueryController {
 
+    private final EmployeeQueryService service;
 
-        private final EmployeeService employeeService;
+    private final EmployeeServiceImpl employeeService;
 
-        @GetMapping("/name/{name}")
-        public List<Employee> getByName(
-                @PathVariable String name) {
+    @GetMapping("/page")
+    public Page<Employee> getEmployees(
+            @RequestParam int page,
+            @RequestParam int size
+    ) {
+        return employeeService.getAllEmployees(page, size);
+    }
 
-            return employeeService
-                    .getByFirstName(name);
-        }
+    @GetMapping("/dept")
+    public List<Employee> byDept(@RequestParam String dept) {
+        return service.getByDepartment(dept);
+    }
 
-        @GetMapping("/department/{department}")
-        public List<Employee> getByDepartment(
-                @PathVariable String department) {
+    @GetMapping("/gender")
+    public List<Employee> byGender(@RequestParam Gender gender) {
+        return service.getByGender(gender);
+    }
 
-            return employeeService
-                    .getByDepartment(department);
-        }
+    @GetMapping("/search")
+    public List<Employee> search(
+            @RequestParam String dept,
+            @RequestParam Gender gender) {
+        return service.search(dept, gender);
+    }
 
-        @GetMapping("/gender/{gender}")
-        public List<Employee> getByGender(
-                @PathVariable Gender gender) {
+    @GetMapping("/keyword")
+    public List<Employee> keyword(@RequestParam String q) {
+        return service.searchKeyword(q);
+    }
 
-            return employeeService
-                    .getByGender(gender);
-        }
+    @GetMapping("/avg")
+    public Double avg() {
+        return service.avgSalary();
+    }
 
-        @GetMapping("/salary")
-        public List<Employee> salaryRange(
-                @RequestParam BigDecimal min,
-                @RequestParam BigDecimal max) {
+    @GetMapping("/max")
+    public BigDecimal max() {
+        return service.maxSalary();
+    }
 
-            return employeeService
-                    .getSalaryRange(min, max);
-        }
+    @GetMapping("/exists")
+    public boolean exists(@RequestParam String email) {
+        return service.existsEmail(email);
+    }
 
-        @GetMapping("/search")
-        public List<Employee> search(
-                @RequestParam String keyword) {
+    @GetMapping("/summary")
+    public List<EmployeeSummaryDto> summary() {
+        return service.summary();
+    }
 
-            return employeeService
-                    .search(keyword);
-        }
+    @GetMapping("/top")
+    public List<Employee> top() {
+        return service.topSalary();
+    }
 
-        @GetMapping("/highest-salary")
-        public Employee highestSalary() {
+    @PutMapping("/salary")
+    public int updateSalary(
+            @RequestParam Long id,
+            @RequestParam BigDecimal salary) {
+        return service.updateSalary(id, salary);
+    }
 
-            return employeeService
-                    .highestSalary();
-        }
-
-        @GetMapping("/exists")
-        public boolean exists(
-                @RequestParam String email) {
-
-            return employeeService
-                    .emailExists(email);
-        }
-
-        @GetMapping("/count")
-        public long count(
-                @RequestParam String department) {
-
-            return employeeService
-                    .countByDepartment(
-                            department
-                    );
-        }
-
-        @GetMapping("/top5")
-        public List<Employee> topFive() {
-
-            return employeeService
-                    .topFiveSalary();
-        }
-
-        @GetMapping("/status/{status}")
-        public List<Employee> status(
-                @PathVariable EmployeeStatus status) {
-
-            return employeeService
-                    .getByStatus(status);
-        }
+    @DeleteMapping("/status")
+    public int deleteByStatus(@RequestParam EmployeeStatus status) {
+        return service.deleteByStatus(status);
+    }
 }

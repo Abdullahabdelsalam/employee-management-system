@@ -1,5 +1,7 @@
 package com.abdullah.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -37,5 +39,7 @@ public class Project {
     @ManyToMany(
             mappedBy = "projects"
     )
+//    @JsonManagedReference
+    @JsonIgnoreProperties("projects")
     private Set<Employee> employees = new HashSet<>();
 }

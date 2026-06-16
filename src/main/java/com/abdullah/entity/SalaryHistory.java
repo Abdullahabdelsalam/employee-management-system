@@ -1,5 +1,6 @@
 package com.abdullah.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -40,6 +41,7 @@ public class SalaryHistory {
             name = "employee_id",
             nullable = false
     )
+    @JsonBackReference
     private Employee employee;
 
 }

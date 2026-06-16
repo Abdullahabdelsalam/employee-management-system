@@ -1,5 +1,6 @@
 package com.abdullah.entity;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -32,7 +33,10 @@ public class Department {
     )
     private String description;
 
-    @OneToMany(mappedBy = "department")
+    @OneToMany(
+            mappedBy = "department"
+    )
+    @JsonManagedReference
     private List<Employee> employees;
 
     private void addEmployee(Employee employee) {

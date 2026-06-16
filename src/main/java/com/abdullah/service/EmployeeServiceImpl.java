@@ -1,10 +1,19 @@
 package com.abdullah.service;
 
+import com.abdullah.dto.EmployeeRequestDto;
+import com.abdullah.dto.EmployeeResponseDto;
+import com.abdullah.dto.EmployeeSearchDto;
 import com.abdullah.entity.Employee;
 import com.abdullah.entity.EmployeeStatus;
 import com.abdullah.entity.Gender;
+import com.abdullah.mapper.EmployeeMapper;
 import com.abdullah.repository.EmployeeRepository;
+import com.abdullah.specification.EmployeeSpecification;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
@@ -16,10 +25,102 @@ public class EmployeeServiceImpl implements EmployeeService {
 
     private final EmployeeRepository employeeRepository;
 
+
+    private final EmployeeMapper mapper;
+
+    public EmployeeResponseDto save(
+            EmployeeRequestDto dto){
+
+        Employee employee
+                = mapper.toEntity(dto);
+
+        Employee saved
+                = employeeRepository.save(employee);
+
+        return mapper.toDto(saved);
+
+    }
+
+    public List<Employee> search(
+            EmployeeSearchDto dto) {
+
+        Specification<Employee> spec = Specification.where((Specification<Employee>) null);
+        if (dto.getDepartment() != null) {
+
+            spec = spec.and(
+
+                    EmployeeSpecification.hasDepartment(
+
+                                    dto.getDepartment()
+
+                    )
+
+            );
+
+        }
+        if(dto.getGender()!=null){
+
+            spec=spec.and(
+
+                    EmployeeSpecification
+                            .hasGender(
+                                    dto.getGender()
+                            )
+
+            );
+
+        }
+        if(dto.getStatus()!=null){
+
+            spec=spec.and(
+
+                    EmployeeSpecification
+                            .hasStatus(
+                                    dto.getStatus()
+                            )
+
+            );
+
+        }
+        if(dto.getMinSalary()!=null){
+
+            spec=spec.and(
+
+                    EmployeeSpecification
+                            .salaryGreaterThan(
+                                    dto.getMinSalary()
+                            )
+
+            );
+
+        }
+        if(dto.getMaxSalary()!=null){
+
+            spec=spec.and(
+
+                    EmployeeSpecification
+                            .salaryLessThan(
+                                    dto.getMaxSalary()
+                            )
+
+            );
+
+        }
+        return employeeRepository.findAll(spec);
+    }
+
+
+    public Page<Employee> getAllEmployees(int page, int size) {
+
+        Pageable pageable = PageRequest.of(page, size);
+
+        return employeeRepository.findAll(pageable);
+    }
+
     @Override
     public List<Employee> getByFirstName(String name) {
         return employeeRepository
-                .findByFirstName(name);
+                .findDistinctByFirstName(name);
     }
 
     @Override
@@ -27,7 +128,7 @@ public class EmployeeServiceImpl implements EmployeeService {
             String department) {
 
         return employeeRepository
-                .findByDepartmentName(
+                .findDistinctByDepartmentName(
                         department
                 );
     }

@@ -1,7 +1,13 @@
 package com.abdullah.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.SQLDelete;
+import org.hibernate.annotations.SQLRestriction;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -11,12 +17,14 @@ import java.util.Set;
 
 @Entity
 @Table(name = "employees")
+@SQLDelete(sql = "UPDATE employees SET deleted = true WHERE id = ?")
+@SQLRestriction("deleted = false")
 @Setter
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class Employee {
+public class Employee extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -51,6 +59,8 @@ public class Employee {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "department_id")
+    @JsonBackReference
+//    @JsonIgnore
     private Department department;
 
     @OneToOne(
@@ -58,6 +68,8 @@ public class Employee {
             cascade = CascadeType.ALL,
             fetch = FetchType.LAZY
     )
+//    @JsonManagedReference
+    @JsonIgnore
     private EmployeeProfile employeeProfile;
 
     @OneToMany(
@@ -67,6 +79,8 @@ public class Employee {
             orphanRemoval = true
     )
     @OrderBy("changeDate DESC")
+    @JsonManagedReference
+//    @JsonIgnore
     private List<SalaryHistory> salaryHistory;
 
     @ManyToMany(
@@ -84,6 +98,9 @@ public class Employee {
                     name = "project_id"
             )
     )
+//    @JsonBackReference
+    @JsonIgnore
+//    @JsonIgnoreProperties("employees")
     private Set<Project> projects = new HashSet<>();
 
     @ManyToMany(
@@ -101,6 +118,9 @@ public class Employee {
                     name = "skill_id"
             )
     )
+//    @JsonManagedReference
+    @JsonIgnore
+//    @JsonIgnoreProperties("employees")
     private Set<Skill> skills = new HashSet<>();
 
     public void setProfile(EmployeeProfile employeeProfile) {
